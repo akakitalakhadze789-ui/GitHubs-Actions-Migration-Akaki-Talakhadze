@@ -6,4 +6,5 @@ def call(String name = 'World') {
     echo "Current Time: ${new Date()}"
     sh 'echo "Hostname: $(hostname)"'
     sh 'echo "Current User: $(whoami)"'
+    
 }
