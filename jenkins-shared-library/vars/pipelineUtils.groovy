@@ -1,6 +1,6 @@
 // __define-ocg__ Jenkins Shared Library Utility
 def call() {
-    echo "pipelineUtils library loaded ✅"
+    echo "pipelineUtils library loaded "
 }
 
 // Prepare run
