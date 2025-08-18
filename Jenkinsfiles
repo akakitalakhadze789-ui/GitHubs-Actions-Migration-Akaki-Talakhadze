@@ -1,5 +1,8 @@
+@Library('jenkins-shared-library@main') _
 pipeline {
-    agent any
+    agent {
+        label 'aws-jenkins-worker'
+    }
     
     stages {
         stage('Hello World Demo') {
