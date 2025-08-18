@@ -5,6 +5,7 @@ def call() {
 def prepareRun() {
     def runId = UUID.randomUUID().toString()
     echo "Preparation stage: RunID=${runId}"
+    echo "Build Number: ${env.BUILD_NUMBER}"
     writeFile file: "prep.txt", text: "RunID=${runId}\n"
     stash includes: "prep.txt", name: "prepData"
     return runId
@@ -13,11 +14,12 @@ def prepareRun() {
 def runJob(String jobName) {
     unstash "prepData"
     sh """
-      echo '${jobName} running with \$(cat prep.txt)' > ${jobName}.log
+      echo "${jobName} running with $(cat prep.txt)" > ${jobName}.log
     """
     stash includes: "${jobName}.log", name: "${jobName}Data"
     echo "${jobName} complete"
 }
+
 
 def integrateJobs(List jobNames) {
     jobNames.each { unstash "${it}Data" }
