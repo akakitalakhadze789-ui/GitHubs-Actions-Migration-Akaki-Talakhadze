@@ -1,10 +1,9 @@
 @Library('jenkins-shared-library@main') _
-
 pipeline {
-    agent any
+    agent { label 'aws-jenkins-worker' }
 
     stages {
-        stage('Prepare') {
+        stage('Preparation') {
             steps {
                 script {
                     runId = pipelineUtils.prepareRun()
@@ -12,22 +11,14 @@ pipeline {
             }
         }
 
-        stage('Parallel Jobs') {
-            parallel {
-                stage('Job A') {
-                    steps {
-                        script { pipelineUtils.runJob('JobA') }
-                    }
-                }
-                stage('Job B') {
-                    steps {
-                        script { pipelineUtils.runJob('JobB') }
-                    }
-                }
-                stage('Job C') {
-                    steps {
-                        script { pipelineUtils.runJob('JobC') }
-                    }
+        stage('Run Jobs in Parallel') {
+            steps {
+                script {
+                    parallel(
+                        JobA: { pipelineUtils.runJob('JobA') },
+                        JobB: { pipelineUtils.runJob('JobB') },
+                        JobC: { pipelineUtils.runJob('JobC') }
+                    )
                 }
             }
         }
@@ -35,7 +26,7 @@ pipeline {
         stage('Integration') {
             steps {
                 script {
-                    pipelineUtils.integrateJobs(['JobA','JobB','JobC'])
+                    pipelineUtils.integrateJobs(['JobA', 'JobB', 'JobC'])
                 }
             }
         }

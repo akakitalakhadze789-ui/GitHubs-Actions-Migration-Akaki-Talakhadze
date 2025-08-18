@@ -1,11 +1,18 @@
-def prepareRun() {
-    def runId = UUID.randomUUID().toString()
-    echo "Preparation stage: RunID=${runId}"
-    writeFile file: "prep.txt", text: "RunID=${runId}\n"
-    stash includes: "prep.txt", name: "prepData"
-    return runId
+// __define-ocg__ Jenkins Shared Library Utility
+def call() {
+    echo "pipelineUtils library loaded ✅"
 }
 
+// Prepare run
+def prepareRun() {
+    def varOcg = UUID.randomUUID().toString()   // required variable
+    echo "Preparation stage: RunID=${varOcg}"
+    writeFile file: "prep.txt", text: "RunID=${varOcg}\n"
+    stash includes: "prep.txt", name: "prepData"
+    return varOcg
+}
+
+// Run a single job
 def runJob(String jobName) {
     unstash "prepData"
     sh """
@@ -15,6 +22,7 @@ def runJob(String jobName) {
     echo "${jobName} complete"
 }
 
+// Integrate multiple jobs
 def integrateJobs(List jobNames) {
     jobNames.each { unstash "${it}Data" }
     sh "cat ${jobNames.collect { it + '.log' }.join(' ')} > combined.txt"
@@ -22,6 +30,7 @@ def integrateJobs(List jobNames) {
     echo "Integration complete"
 }
 
+// Deploy
 def deploy() {
     unstash "integrationData"
     echo "Deploy step using combined results:"
