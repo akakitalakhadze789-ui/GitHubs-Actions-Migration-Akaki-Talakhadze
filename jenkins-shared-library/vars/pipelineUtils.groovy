@@ -1,5 +1,5 @@
 def call() {
-    echo "pipelineUtils library loaded ✅"
+    echo "pipelineUtils library loaded"
 }
 
 def prepareRun() {
@@ -10,17 +10,6 @@ def prepareRun() {
     stash includes: "prep.txt", name: "prepData"
     return runId
 }
-
-// def runJob(String jobName) {
-//     unstash "prepData"
-//     sh """
-//       echo "${jobName} running with $(cat prep.txt)" > ${jobName}.log
-//     """
-//     stash includes: "${jobName}.log", name: "${jobName}Data"
-//     echo "${jobName} complete"
-// }
-
-
 
 def runJob(String jobName) {
     unstash "prepData"
