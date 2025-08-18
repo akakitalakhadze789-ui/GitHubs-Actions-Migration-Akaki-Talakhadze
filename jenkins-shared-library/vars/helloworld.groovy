@@ -4,4 +4,6 @@ def call(String name = 'World') {
     echo "Build Number: ${env.BUILD_NUMBER}"
     echo "Job Name: ${env.JOB_NAME}"
     echo "Current Time: ${new Date()}"
+    sh 'echo "Hostname: $(hostname)"'
+    sh 'echo "Current User: $(whoami)"'
 }
