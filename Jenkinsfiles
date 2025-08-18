@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Hello World Demo') {
+            steps {
+                script {
+                    helloworld()
+                }
+            }
+        }
+        
+        stage('Hello with Name') {
+            steps {
+                script {
+                    helloworld('Jenkins Team')
+                }
+            }
+        }
+    }
+}
