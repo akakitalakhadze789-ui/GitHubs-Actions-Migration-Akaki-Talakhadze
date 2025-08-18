@@ -4,36 +4,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Preparation') {
+        stage('Prepare') {
             steps {
                 script {
-                    
-                    env.varOcg = pipelineUtils.prepareRun()
+                    runId = pipelineUtils.prepareRun()
                 }
             }
         }
 
         stage('Parallel Jobs') {
             parallel {
-                stage('Job1') {
+                stage('Job A') {
                     steps {
-                        script {
-                            pipelineUtils.runJob("Job1")
-                        }
+                        script { pipelineUtils.runJob('JobA') }
                     }
                 }
-                stage('Job2') {
+                stage('Job B') {
                     steps {
-                        script {
-                            pipelineUtils.runJob("Job2")
-                        }
+                        script { pipelineUtils.runJob('JobB') }
                     }
                 }
-                stage('Job3') {
+                stage('Job C') {
                     steps {
-                        script {
-                            pipelineUtils.runJob("Job3")
-                        }
+                        script { pipelineUtils.runJob('JobC') }
                     }
                 }
             }
@@ -42,7 +35,7 @@ pipeline {
         stage('Integration') {
             steps {
                 script {
-                    pipelineUtils.integrateJobs(["Job1","Job2","Job3"])
+                    pipelineUtils.integrateJobs(['JobA','JobB','JobC'])
                 }
             }
         }
