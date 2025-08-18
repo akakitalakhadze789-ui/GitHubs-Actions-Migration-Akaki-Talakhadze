@@ -11,14 +11,26 @@ def prepareRun() {
     return runId
 }
 
+// def runJob(String jobName) {
+//     unstash "prepData"
+//     sh """
+//       echo "${jobName} running with $(cat prep.txt)" > ${jobName}.log
+//     """
+//     stash includes: "${jobName}.log", name: "${jobName}Data"
+//     echo "${jobName} complete"
+// }
+
+
+
 def runJob(String jobName) {
     unstash "prepData"
     sh """
-      echo "${jobName} running with $(cat prep.txt)" > ${jobName}.log
+      echo "${jobName} running with \$(cat prep.txt)" > ${jobName}.log
     """
     stash includes: "${jobName}.log", name: "${jobName}Data"
     echo "${jobName} complete"
 }
+
 
 
 def integrateJobs(List jobNames) {
